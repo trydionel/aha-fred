@@ -64,7 +64,7 @@ class BroadcastObserver {
 
   containsBroadcast(nodes) {
     return Array.from(nodes)
-      .filter(e => e.id.startsWith('broadcast-'))
+      .filter(e => e.matches('.broadcasts'))
       .length > 0
   }
 
@@ -89,10 +89,10 @@ class BroadcastObserver {
         FredController.instance.hide()
       }
     })
-    this.observer.observe(document.body, { childList: true, subtree: true })
+    this.observer.observe(document.body, { childList: true })
 
     // Also check for broadcasts already on the page
-    if (this.containsBroadcast(document.querySelector('.broadcasts'))) {
+    if (this.containsBroadcast(document.querySelectorAll('.broadcasts'))) {
       FredController.instance.show()
     }
   }
