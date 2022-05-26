@@ -19,9 +19,10 @@ class FredController {
   }
 
   mount() {
-    if (this.el) return
+    if (this.isMounted()) return
 
     const container = document.querySelector('.top-nav__secondary')
+
     const newFred = document.createElement('img')
     newFred.id = 'fred'
     newFred.src = `data:image/png;base64,${image}`
@@ -33,7 +34,11 @@ class FredController {
 
     newFred.style.transition = 'transform 3s linear'
     newFred.style.transform = 'translateY(100%)'
-    container.prepend(newFred)
+    
+    const wrapper = document.createElement('div')
+    wrapper.style.overflow = 'hidden'
+    wrapper.appendChild(newFred)
+    container.prepend(wrapper)
 
     this.el = newFred
   }
@@ -49,6 +54,7 @@ class FredController {
   }
 
 }
+
 FredController.instance = new FredController()
 
 class BroadcastObserver {
@@ -83,10 +89,10 @@ class BroadcastObserver {
         FredController.instance.hide()
       }
     })
-    this.observer.observe(document.body, { childList: true })
+    this.observer.observe(document.body, { childList: true, subtree: true })
 
     // Also check for broadcasts already on the page
-    if (this.containsBroadcast(document.body)) {
+    if (this.containsBroadcast(document.querySelector('.broadcasts'))) {
       FredController.instance.show()
     }
   }
@@ -94,10 +100,8 @@ class BroadcastObserver {
 BroadcastObserver.instance = new BroadcastObserver()
 
 const activateFred = () => {
-  if (!FredController.instance.isMounted()) {
-    FredController.instance.mount()
-    BroadcastObserver.instance.observe()
-  }
+  FredController.instance.mount()
+  BroadcastObserver.instance.observe()
 }
 
 activateFred()
