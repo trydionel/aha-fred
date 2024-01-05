@@ -5,7 +5,7 @@
   "author": "trydionel",
   "repository": {
     "type": "git",
-    "url": "TODO: Add the GitHub URL to your extension in package.json"
+    "url": "https://github.com/trydionel/aha-fred"
   },
   "license": "MIT",
   "devDependencies": {
